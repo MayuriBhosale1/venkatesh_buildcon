@@ -5,10 +5,12 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:venkatesh_buildcon_app/Api/Repo/project_repo.dart';
+import 'package:venkatesh_buildcon_app/Api/ResponseModel/GenerateNcResponseModel/generate_nc_floor_res_model.dart';
 import 'package:venkatesh_buildcon_app/View/Constant/app_color.dart';
 import 'package:venkatesh_buildcon_app/View/Constant/app_string.dart';
 import 'package:venkatesh_buildcon_app/View/Constant/responsive.dart';
@@ -90,8 +92,13 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
       return;
     }
 
-    final XFile? pickedImage = await _picker.pickImage(source: source);
-
+    // final XFile? pickedImage = await _picker.pickImage(source: source);
+    //02/01/26
+    final XFile? pickedImage = await _picker.pickImage(
+      source: source,
+      imageQuality: 60, //  compress image at capture time
+    );
+//=========================
     if (pickedImage != null) {
       File imageFile = File(pickedImage.path);
 
@@ -105,6 +112,19 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
       }
     }
   }
+
+  //03/01/26
+  Future<Uint8List> _compressImage(File file) async {
+    return await FlutterImageCompress.compressWithFile(
+          file.absolute.path,
+          quality: 60,
+          minWidth: 1280,
+          minHeight: 1280,
+        ) ??
+        await file.readAsBytes();
+  }
+
+  ///=========================
 
 // view captured image in a dialog
   void _viewCapturedImage(File imageFile) {
@@ -120,7 +140,7 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
                 borderRadius: BorderRadius.circular(12),
                 child: Image.file(imageFile, fit: BoxFit.contain),
               ),
-            ),
+            ), 
             Positioned(
               right: 10,
               top: 10,
@@ -141,8 +161,12 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
 
     try {
       for (var img in _selectedImages) {
-        Uint8List imageBytes = await img.readAsBytes();
+        // Uint8List imageBytes = await img.readAsBytes();
+        // base64Images.add('data:image/jpeg;base64,${base64Encode(imageBytes)}');
+        //03/01/26
+        Uint8List imageBytes = await _compressImage(img);
         base64Images.add('data:image/jpeg;base64,${base64Encode(imageBytes)}');
+/////
       }
     } catch (e) {
       print("Error encoding images: $e");
@@ -289,7 +313,7 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
                                       final File editedFile = File(path);
                                       await editedFile.writeAsBytes(
                                         bytes,
-                                        flush: false, // ⚡ faster
+                                        flush: false, //  faster
                                       );
 
                                       Navigator.of(dialogContext)
@@ -580,9 +604,19 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
                     onChanged: (value) {
                       setState(() {
                         selectedFloor = value;
-                        controller.floor_id = controller.ncgeneratefloor
-                            .firstWhere((e) => e.floor_name == value)
-                            .floor_id;
+                        // controller.floor_id = controller.ncgeneratefloor
+                        //     .firstWhere((e) => e.floor_name == value)
+                        //     .floor_id;
+                        //07/01/26
+                        NcGenerateFloor? floor;
+try {
+  floor = controller.ncgeneratefloor
+      .firstWhere((e) => e.floor_name == value);
+} catch (e) {
+  floor = null;
+}
+controller.floor_id = floor?.floor_id;
+///=====================================
                       });
                     },
                   ),
@@ -710,7 +744,8 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
                     ),
                   SizedBox(height: h * 0.02),
                   _buildDescriptionField(
-                    label: "Checker/Approver Remarks",
+                   label: "Checker/Approver Remarks",
+                  // label: AppString.checkerApproverRemarks,
                     hintText: "Add description",
                     controller: descriptionController,
                     maxLine: 2,
@@ -718,6 +753,7 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
                   SizedBox(height: h * 0.02),
                   Text(
                     "Checker/Approver Images:",
+                 // AppString.checkerApproverImages,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
@@ -799,36 +835,33 @@ class _GenerateNcScreenState extends State<GenerateNcScreen> {
                           EdgeInsets.only(top: h * 0.015, bottom: h * 0.02),
                       child: GestureDetector(
                         // onTap: () async {
+                        //   // if (!mounted) return;
                         //   setState(() {
-                        //     isLoading = true; // start loading
+                        //     isLoading = true;
                         //   });
-
-                        //   await Future.delayed(Duration(
-                        //       seconds: 2)); // show spinner for 2 seconds
-
-                        //   await _submitForm(); // call your existing submit function
-
+                        //   //remove this for avoid delay to generate nc from checker/approver
+                        //   //  await Future.delayed(const Duration(seconds: 2));
+                        //   await _submitForm();
+                        //   //  if (!mounted) return;
                         //   setState(() {
-                        //     isLoading = false; // stop loading
+                        //     isLoading = false;
                         //   });
                         // },
-                        //12/12
+
+                        //02/01/26
                         onTap: () async {
-                          // if (!mounted) return;
                           setState(() {
                             isLoading = true;
                           });
 
-                          await Future.delayed(const Duration(seconds: 2));
-
                           await _submitForm();
 
-                          //  if (!mounted) return;
                           setState(() {
                             isLoading = false;
                           });
                         },
-//===============================>
+
+//===================>
                         child: isLoading
                             ? Center(
                                 child: CircularProgressIndicator(

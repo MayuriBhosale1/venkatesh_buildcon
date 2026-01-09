@@ -58,10 +58,9 @@ class AppString {
   static const pending = "Pending";
   static const completed = "Completed";
   static const trainingGiven = "Training Given to";
-  static const checklistdata ="Checklist Data";
-  static const checklisttype ="Checklist Type";
+  static const checklistdata = "Checklist Data";
+  static const checklisttype = "Checklist Type";
   static const checklistdataaspertype = "checklist Data";
-
 
   static const flat = "FLAT";
   static const floor = "FLOOR";
@@ -132,7 +131,9 @@ class AppString {
   static const overAllRemark = "Overall Remark";
   static const overAllImage = "Overall Image";
   static const noImage = "No Images";
-  static const totalNc = "Total NC";
+  //05/01/2026
+  // static const totalNc = "Total NC";
+  static const totalNc = "NC ";
   static const yellowCard = "Yellow Card";
   static const orangeCard = "Orange Card";
   static const redCard = "Red Card";
@@ -141,23 +142,26 @@ class AppString {
   static const oldPassword = "Old Password";
   static const newPassword = "New Password";
   static const reEnterNewPassword = "Re Enter New Password";
+
   static const generatenc = "Generate Nc";
   static const generatencDetails = "NC Details";
   static const generatenccompleteDetails = "Complete Details";
-  
-  
+  static const flagCategory = "Flag Category";
+  // ===== NC DETAIL SCREEN STRINGS =====
+static const checkerApproverRemarks = "Checker/Approver Remarks";
+static const checkerApproverImages = "Checker/Approver Images";
 
-    static const flagCategory= "Flag Category";
+static const makerRemarks = "Maker Remarks";
+static const makerImages = "Maker Images";
+
+static const approverRemarks = "Approver Remarks";
+static const approverImages = "Approver Images";
+
 
   static const overAllRemarkbym = "Overall Remarks By Maker";
   static const overAllRemarkbyc = "Overall Remarks By Checker";
   static const overAllRemarkbya = "Overall Remarks By Approver";
   static const imagedes = "Image Description";
-
- 
-
-
-
 }
 
 List<String> onBoardTitle = [

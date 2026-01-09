@@ -311,8 +311,14 @@ class _NcImageCaptureWidgetState extends State<NcImageCaptureWidget> {
           "You've reacched the limit - you can add up to 5 photos only.");
       return;
     }
-
-    final XFile? picked = await _picker.pickImage(source: source);
+    
+    // final XFile? picked = await _picker.pickImage(source: source);
+    //02/01/26
+    final XFile? picked = await _picker.pickImage(
+      source: source,
+      imageQuality: 60, //  compress image at capture time
+    );
+//===================================
     if (picked == null) return;
 
     File original = File(picked.path);
@@ -326,7 +332,7 @@ class _NcImageCaptureWidgetState extends State<NcImageCaptureWidget> {
     }
   }
 
-  // ✅ UPDATED: Pen Remark Editor with Loading + Faster Save
+  //  UPDATED: Pen Remark Editor with Loading + Faster Save
   Future<File?> _openPenRemarkEditor(File imageFile) async {
     final GlobalKey<ImagePainterState> painterKey =
         GlobalKey<ImagePainterState>();

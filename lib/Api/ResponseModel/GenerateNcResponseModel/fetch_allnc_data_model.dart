@@ -187,7 +187,6 @@
 //   }
 // }
 
-
 //UPDATED 15/12
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -310,10 +309,9 @@ class FetchNcData {
             : [];
 
     // Close images
-    closeImage =
-        json['close_image'] != null && json['close_image'] is List
-            ? json['close_image']
-            : [];
+    closeImage = json['close_image'] != null && json['close_image'] is List
+        ? json['close_image']
+        : [];
 
     // ===================== APPROVER IMAGES FIX =====================
 
@@ -339,10 +337,13 @@ class FetchNcData {
       approverImages = [];
     }
 
-    // ===============================================================
+   
 
+    // projectCreateDate =
+    //     DateTime.tryParse(json['date']?.toString() ?? '') ?? DateTime.now();
+    //05/02/26
     projectCreateDate =
-        DateTime.tryParse(json['date']?.toString() ?? '') ?? DateTime.now();
+        DateTime.tryParse(json['project_create_date']?.toString() ?? '');
   }
 
   int? _parseInt(dynamic value) {

@@ -713,7 +713,7 @@ class _GenerateNcDetailsScreenState extends State<GenerateNcDetailsScreen> {
   String? selectedStatus;
   String? userType;
 
-  // ✅ NEW: Track initial load state
+  //  NEW: Track initial load state
   bool _isInitializing = true;
 
   void _applyStatusFilter(String? status) {
@@ -733,11 +733,11 @@ class _GenerateNcDetailsScreenState extends State<GenerateNcDetailsScreen> {
       ncController = Get.put(NcController());
     }
 
-    // ✅ CRITICAL FIX: Initialize data properly
+    //  CRITICAL FIX: Initialize data properly
     _initializeScreen();
   }
 
-  // ✅ NEW: Proper async initialization
+  //  NEW: Proper async initialization
   Future<void> _initializeScreen() async {
     try {
       // Load both operations in parallel
@@ -1013,8 +1013,12 @@ class _GenerateNcDetailsScreenState extends State<GenerateNcDetailsScreen> {
                     itemBuilder: (context, index) {
                       final nc = filteredList[index];
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
+                        onTap: () async {
+                          //05/01/2026 async
+                          final result = await
+
+                              ///
+                              Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
@@ -1041,6 +1045,12 @@ class _GenerateNcDetailsScreenState extends State<GenerateNcDetailsScreen> {
                               ),
                             ),
                           );
+                          //05/01/2026
+                          if (result != null && result["refresh"] == true) {
+                            await _fetchData(); //  THIS WAS MISSING
+                            setState(() {});
+                          }
+//=========================
                         },
                         child: Card(
                           margin: const EdgeInsets.symmetric(vertical: 8.0),
