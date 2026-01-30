@@ -1274,11 +1274,7 @@ class _GenerateNcCompleteDetailsScreenState
             runSpacing: 8,
             children: rectifiedImages.map((img) {
               final map = img as Map<String, dynamic>;
-              final urlPath = (map['url'] ?? '').toString();
-
-              // final fullUrl = urlPath.startsWith('http')
-              //     ? urlPath
-              //     : '${ApiRouts.base}$urlPath';
+              final urlPath = (map['url'] ?? '').toString();            
               //08/01/26
               final fullUrl = urlPath.startsWith('http')
                   ? urlPath
@@ -1451,10 +1447,6 @@ class _GenerateNcCompleteDetailsScreenState
           children: images.map((img) {
             if (img is Map && img.containsKey("url")) {
               final urlPath = img["url"];
-
-              // final fullUrl = urlPath.startsWith("http")
-              //     ? urlPath
-              //     : "${ApiRouts.base}$urlPath";
               final fullUrl = urlPath.startsWith('http')
                   ? urlPath
                   : buildImageUrl(ApiRouts.base, urlPath);

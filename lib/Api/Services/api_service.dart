@@ -17,7 +17,7 @@ enum HeaderType {
 }
 
 class APIService {
-  var response;
+  var response;  
 
   Future getResponse({
     required String url,
@@ -30,7 +30,7 @@ class APIService {
       if (apiType == APIType.aGet) {
         final result = await http.get(Uri.parse(url), headers: header);
         response = returnResponse(result.statusCode, result.body);
-        log("res${result.body}");
+        log("res${result.body}"); 
       } else if (apiType == APIType.aPut) {
         log("REQUEST PARAMETER ======>>>>> ${jsonEncode(body)}");
 
@@ -62,7 +62,7 @@ class APIService {
         response = returnResponse(result.statusCode!, jsonEncode(result.data));
       } else {
         log("REQUEST PARAMETER ======>>>>> ${json.encode(body)}");
-
+    
         final result = await http.post(Uri.parse(url),
             body: jsonEncode(body), headers: header);
 
@@ -89,7 +89,7 @@ class APIService {
   }
 
   returnResponse(int status, String result) {
-    switch (status) {
+    switch (status) {  
       case 200:
         return jsonDecode(result);
       case 201:

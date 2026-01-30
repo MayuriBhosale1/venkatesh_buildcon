@@ -61,8 +61,8 @@ class _MyAppState extends State<MyApp> {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.linear(Responsive.isDesktop(context)
-              ? 1.6
-              : Responsive.isTablet(context)
+              ? 1.6  
+              : Responsive.isTablet(context) 
                   ? 1.7
                   : 1.1)),
       child: GetMaterialApp(
